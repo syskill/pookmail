@@ -1,0 +1,59 @@
+-- Copyright 2008 PookMail.com (tm).
+--
+-- Licensed under the GNU GENERAL PUBLIC LICENSE, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+
+
+--
+-- Table structure for table 'mail'
+--
+
+CREATE TABLE mail (
+  mid int(11) NOT NULL auto_increment,
+  sender varchar(255) NOT NULL default '',
+  rcpt_md5 varchar(33) NOT NULL default '',
+  rcpt varchar(255) NOT NULL default '',
+  subject varchar(255) default NULL,
+  data text,
+  timestamp bigint(20) NOT NULL default '0',
+  estado int(2) NOT NULL default '0',
+  filename_md5 varchar(32) default NULL,
+  raw text,
+  status varchar(8) NOT NULL default 'READY',
+  processed varchar(64) NOT NULL default 'PLAIN',
+  PRIMARY KEY  (mid),
+  KEY rcpt_md5 (rcpt_md5),
+  KEY timestamp (timestamp),
+  KEY estado (estado),
+  KEY filename_md5 (filename_md5),
+  KEY status (status)
+) TYPE=InnoDB;
+
+--
+-- Table structure for table 'pookid'
+--
+
+CREATE TABLE pookid (
+  pid int(11) NOT NULL auto_increment,
+  pookid varchar(8) NOT NULL default '',
+  keyid varchar(8) NOT NULL default '',
+  pubkey text,
+  created bigint(20) NOT NULL default '0',
+  bought bigint(20) NOT NULL default '0',
+  expires bigint(20) NOT NULL default '0',
+  is_hosted char(3) NOT NULL default 'no',
+  PRIMARY KEY  (pid),
+  KEY pookid (pookid),
+  KEY keyid (keyid),
+  KEY expires (expires)
+) TYPE=InnoDB;
+

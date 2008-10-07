@@ -1,0 +1,72 @@
+body {
+margin: 0;
+padding: 0;
+background: white;
+font: 12px verdana, arial, helvetica;
+}
+
+table { width: 700px; border: 0; }
+
+td {
+font: 12px verdana, arial, helvetica;
+text-align: left; 
+}
+
+a {
+font: bolder 11px verdana, arial, helvetica;
+color: #000;  
+text-decoration: none;
+border-bottom: 1px dotted #000;
+}
+a:hover { color: #fff; background: #000; }
+
+h1 {
+font-weight: bolder;
+font-size: 150%;
+margin: 1.3em 0 0 0.3em;
+}
+h2 { margin-bottom: 0; }
+h3 { margin: 0 0 0.3em; }
+
+div#result{
+background: #fad163;
+font: bolder 12px verdana, arial, helvetica;
+text-align: center;
+padding: 0.2em;
+margin: 1.5em;
+}
+div#welcome { width: 630px; margin: 0 0 0 3em; }
+p#nummails { text-align: right;} 
+td#title { vertical-align: bottom; background: #ccc; }
+td#logout { text-align: right; }
+td#copyright { text-align: center; background: #ccc; }
+
+a.delete {
+color: red;  
+border-bottom: 1px dotted red;
+}
+a.delete:hover { color: #fff; background: red; }
+
+div.claro , div.oscuro {
+padding: 0.3em;
+background: #ddd;
+margin-bottom: 2em;
+}
+
+div.oscuro { background: #aaa; }
+
+div.cmd {
+float: right;
+vertical-align: middle;
+color black;
+}
+
+.rss {
+font: normal bold 10px verdana, arial, helvetica;
+color: #fff;
+background: #f60;
+border-top: 1px solid #ffc8a4;
+border-right: 1px solid #7d3302;
+border-bottom: 1px solid #3f1a01;
+border-left: 1px solid #ff9a57;
+}
