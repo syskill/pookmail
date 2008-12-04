@@ -22,6 +22,8 @@ include( 'i18l.php' );
 include( 'libgatika.php' );
 
 function rss_getHeader( $charset = 'ISO-8859-1' ) {
+   global $config;
+
    $now = time();
    $year = date( "Y" , $now );
    $build = date( "D, j M Y H:i:s T" ,$now );
@@ -32,29 +34,31 @@ function rss_getHeader( $charset = 'ISO-8859-1' ) {
 <rss version="2.0">
    <channel>
       <title>PookMail.com</title>
-      <link>http://www.pookmail.com</link>
+      <link>http://$config['webhost']</link>
       <description>$desc</description>
       <copyright>Copyright 2004-$year, PookMail.com</copyright>
       <generator>PookMail 1.0</generator>
-      <managingEditor>pookinfo@pookmail.com</managingEditor>
-      <webMaster>pookinfo@pookmail.com</webMaster>
+      <managingEditor>pookinfo@$config['domain']</managingEditor>
+      <webMaster>pookinfo@$config['domain']</webMaster>
       <ttl>10</ttl>\n
 EOT;
 }
 
 function rss_getItems( $local='' ) {
+   global $config;
+
    $xml = '';
    srand( time() );
 
    db_connect();
    if ( !db_isConnected() ) { return xml; }
-   $mails = db_getMailsOf( $local.'@pookmail.com' , $false );
+   $mails = db_getMailsOf( $local.'@'.$config['domain'] , $false );
 
    while ( $e = array_pop($mails) ) {
       $xml .= "<item>\n";
       $xml .= "<title>".$e['subject']."</title>\n";
       $xml .= "<guid>".$e['subject']."</guid>\n";
-      $xml .= "<link>http://www.pookmail.com/mailbox.php?email=".$local."&amp;sid=".md5( rand() )."</link>\n";
+      $xml .= "<link>http://".$config['webhost']."/mailbox.php?email=".$local."&amp;sid=".md5( rand() )."</link>\n";
       $xml .= "<description>".$e['from']."</description>\n";
       //$xml .= "<pubDate>".date("D, j M Y H:i:s Z" , $e['date'])."</pubDate>\n";
       $xml .= "<pubDate>".date("r" , $e['date'])."</pubDate>\n";

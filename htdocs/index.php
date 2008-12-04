@@ -212,7 +212,7 @@ google_color_url = "008000";
 <!--
 function init() {
 if ( window != window.top) {
-document.write('<center><p>Loading <b>P<font color="red">o</font><font color="blue">o</font>kMail.com</b>, please wait ...</p></center>');top.location = "http://www.pookmail.com"; return;
+document.write('<center><p>Loading <b>P<font color="red">o</font><font color="blue">o</font>kMail.com</b>, please wait ...</p></center>');top.location = "http://<?php echo $config['webhost']; ?>"; return;
 }
 document.login.email.focus();
 }
@@ -282,7 +282,7 @@ PookMail uses <b>Cookies</b> in order to allow you to setup your preferred langu
 
 <div id="emailfield">
 <center>
-<span dir="ltr"><input name="email" type="text" /><b>@pookmail.com</b></span>
+<span dir="ltr"><input name="email" type="text" /><b>@<?php echo $config['domain']; ?></b></span>
 <br />
 <input id="go" type="submit" value="<?php echo getLabel('enter'); ?>" />
 </center>

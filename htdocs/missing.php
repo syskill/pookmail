@@ -24,7 +24,7 @@
 <html>
 <head>
 <meta content="text/html; charset=<?php echo getCharSet() ?>" http-equiv="content-type" />
-<meta http-equiv="refresh" content="10;url=http://www.pookmail.com/" />
+<meta http-equiv="refresh" content="10;url=http://<?php echo $config['webhost']; ?>/" />
 <title>PookMail.com</title>
   
 <style type="text/css">
@@ -80,7 +80,7 @@ body { direction: rtl; }
 
 <tr><td align="center" height="400px">
 
-<b>Uppps!!!</b> <?php echo getHelp('404') ?> <a href="http://www.pookmail.com">P<font color="red">o</font><font color="blue">o</font>kMail.com</a>.
+<b>Uppps!!!</b> <?php echo getHelp('404') ?> <a href="http://<?php echo $config['webhost']; ?>">P<font color="red">o</font><font color="blue">o</font>kMail.com</a>.
 
 </td></tr>
 

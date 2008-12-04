@@ -18,5 +18,5 @@ use strict;
 
 use DDBB;
 
-DDBB::remove24HEmails();
+DDBB::removeExpiredEmails();
 

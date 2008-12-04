@@ -255,9 +255,11 @@ function processCommand( $cmd ) {
 }
 
 function recoveryUserEmail() {
+   global $config;
+
    $email = $_POST['email'];
    if ( $email == "" ) { $email = $_GET['email']; }
-   if ( $email != "" ) { return $email . "@pookmail.com"; }
+   if ( $email != "" ) { return $email . "@" . $config['domain']; }
 
    return db_getEmailAddressByID( $_GET['id'] );
 }
@@ -278,10 +280,12 @@ function getUserEmails( $email ) {
 }
 
 function getDontBotherMeEmail() {
+   global $config;
+
    $mail = array(
               "id" => "221" 
 	     ,"subject" => getTxt( 'dbm.subject' )
-	     ,"from" => "PookInfo <pookinfo@pookmail.com>"
+	     ,"from" => "PookInfo <pookinfo@".$config['domain'].">"
 	     ,"date" => mktime()
 	     ,"encrypted" => "no"
 	     ,"body" => getTxt( 'dbm.body' )

@@ -122,7 +122,7 @@ sub spawn {
 
    if ( !($email[0] eq "pookmail") && !($email[0] eq "pookinfo") ) {
       my $o = RFC2822::parse( $client->{MSG} );
-      DDBB::insertMail( $email[0]."\@pookmail.com" , $client->{FROM} , $o->{subject} , $o->{text} , $client->{MSG} );
+      DDBB::insertMail( $email[0]."\@".$CFG->{domain} , $client->{FROM} , $o->{subject} , $o->{text} , $client->{MSG} );
    }
 
    logmsg ($email[0] . " 200 " . length($client->{MSG}) );

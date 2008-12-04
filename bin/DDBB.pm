@@ -46,10 +46,10 @@ sub insertMail {
    $dbh->disconnect();
 }
 
-sub remove24HEmails {
+sub removeExpiredEmails {
    my $dbh = connectToDB();
 
-   my $sql = "delete from mail where timestamp < " . ( time() - 86400 ) . " and status='READY'";
+   my $sql = "delete from mail where timestamp < " . ( time() - $CFG->{expire} ) . " and status='READY'";
    print $sql . "\n";
 
    $dbh->do( $sql );

@@ -20,6 +20,9 @@
 
    $config = array();
 
+   $config['domain'] ='pookmail.example.com';
+   $config['webhost']='pookmail.example.com';
+
    $config['db_user']='pookmail';
    $config['db_pwd'] ='123456';
    $config['db_db']  ='gatika';

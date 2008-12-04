@@ -18,6 +18,7 @@ use strict;
 use vars qw {$CFG};
 
 $CFG = {
+  domain => "pookmail.example.com",
   smtp => {
     ip => "0.0.0.0",
     port => 25
@@ -29,5 +30,6 @@ $CFG = {
     user => "pookmail",
     pass => "123456",
     db   => "gatika"
-  } 
+  },
+  expire => 86400
 };

@@ -37,7 +37,7 @@
 <title>PookMail.com</title>
   
 <link rel="shortcut icon" href="favicon.ico" />
-<link rel="alternate" type="application/rss+xml" title="<?php echo getTxt('rss.desc'); ?>" href="http://www.pookmail.com/rss/<?php $e=explode("@",$email); echo $e[0]; ?>.xml" />
+<link rel="alternate" type="application/rss+xml" title="<?php echo getTxt('rss.desc'); ?>" href="http://<?php echo $config['webhost']; ?>/rss/<?php $e=explode("@",$email); echo $e[0]; ?>.xml" />
 
 <style type="text/css" media="screen,projection">
 <!--
@@ -190,7 +190,7 @@ google_color_url = "008000";
 <?php } ?>
 
 <?php
-   if ( trim($email) != '@pookmail.com') {
+   if ( trim($email) != '@' . $config['domain']) {
 ?>
 <p id="rss"><span class="rss" title="RSS Version 2.0">RSS 2.0</span>
 <a href="/rss/<?php $_e = explode("@",$email); echo $_e[0]; ?>.xml" title="Really Symple Syndication (RSS)">
