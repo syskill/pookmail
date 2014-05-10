@@ -23,10 +23,9 @@
    $config['domain'] ='pookmail.example.com';
    $config['webhost']='pookmail.example.com';
 
+   $config['db_dsn'] ='mysql:dbname=pookmail;host=192.168.0.1';
    $config['db_user']='pookmail';
    $config['db_pwd'] ='123456';
-   $config['db_db']  ='gatika';
-   $config['db_host']='192.168.0.1';
 
    $config['logfile']='/path/to/pookmail/log/webusage_log';
 ?>

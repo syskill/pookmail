@@ -24,8 +24,7 @@ use Configure;
 my $CFG = $Configure::CFG;
 
 sub connectToDB {
-   my $dbh = DBI->connect("DBI:mysql:database=".$CFG->{db}->{db}.";mysql_connect_timeout=3;host=".$CFG->{db}->{host},
-                          $CFG->{db}->{user}, $CFG->{db}->{pass}, {'RaiseError' => 1});
+   my $dbh = DBI->connect("DBI:".$CFG->{db}->{connstr}, $CFG->{db}->{user}, $CFG->{db}->{pass}, {'RaiseError' => 1});
    return $dbh;
 }
 

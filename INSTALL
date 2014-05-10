@@ -3,12 +3,17 @@ SYSTEM REQUIREMENTS
 
  * Apache (>1.3.37)
  * MySQL (>3.23.56)
- * PHP (>4.4.4)
+ * PHP (>5.0)
+ * PDO
  * Perl 5.8.8
  * Mail::Message (2.080)
  * DBI
  * Digest::MD5
  * Net::SMTP::Server
+
+ PostgreSQL or other databases may work as well, provided they are supported
+ by DBI and PDO, and don't limit row or column size in such a way that emails
+ are truncated.
 
  CAPTCHA REQUIREMENTS (OPTIONAL)
  -------------------------------

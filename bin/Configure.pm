@@ -26,10 +26,9 @@ $CFG = {
   timeout => 45,
   log_dir => "/path/to/pookmail/log/",
   db => {
-    host => "192.168.0.1",
-    user => "pookmail",
-    pass => "123456",
-    db   => "gatika"
+    connstr => "mysql:database=gatika;mysql_connect_timeout=3;host=192.168.0.1",
+    user    => "pookmail",
+    pass    => "123456"
   },
   expire => 86400
 };

@@ -18,10 +18,10 @@
  */
 
 
-function getEmailUser( $mysql , $mid ) {
+function getEmailUser( $dbh , $mid ) {
   $email = "";
 
-  if ( is_null($mysql) ) { return $email; }
+  if ( is_null($dbh) ) { return $email; }
 
   if ( $mid == "" || is_null($mid) ) { return $email; }
     
@@ -30,11 +30,12 @@ function getEmailUser( $mysql , $mid ) {
   $mid = trim($mid);
   if ( strlen($mid) != 32 ) { $mid = "no existe fijo"; }
 
-  $sql = "select rcpt FROM mail WHERE filename_md5 = '". $mid ."';";
-//     echo $sql . "<br>";
-  $res = mysql_query( $sql , $mysql );
+  $stmt = $dbh->prepare("select rcpt FROM mail WHERE filename_md5 = ?");
+  $stmt->bindParam(1, $mid, PDO::PARAM_STR, 32);
+//     echo $stmt->queryString . "<br>";
+  $stmt->execute();
 
-  if ($e = mysql_fetch_row($res)) {
+  if ($e = $stmt->fetch()) {
      $email = $e[0];
 //     echo "EMAIL: ". $email ."]";
   }
@@ -42,10 +43,10 @@ function getEmailUser( $mysql , $mid ) {
   return $email;
 }
 
-function deleteEmail ( $mysql , $mid ) {
+function deleteEmail ( $dbh , $mid ) {
   $res = 0;
 
-  if ( is_null($mysql) ) { return 0; }
+  if ( is_null($dbh) ) { return 0; }
 
   if ( $mid == "" || is_null($mid) ) { return 0; }
 
@@ -57,8 +58,9 @@ function deleteEmail ( $mysql , $mid ) {
   $mid = trim($mid);
   if ( strlen($mid) != 32 ) { return 0; }
 
-  $sql = "DELETE FROM mail WHERE filename_md5 = '". $mid ."';";
-  $res = mysql_query( $sql , $mysql );
+  $stmt = $dbh->prepare("DELETE FROM mail WHERE filename_md5 = ?");
+  $stmt->bindParam(1, $mid, PDO::PARAM_STR, 32);
+  $res = $stmt->execute();
 
   return $res;
 }

@@ -20,37 +20,38 @@
 
 include( 'config.php' );
 
-$__db = null;
+$__dbh = null;
 
 
 function db_isConnected() {
-   global $__db;
-   return !( $__db == null );
+   global $__dbh;
+   return !( $__dbh == null );
 }
 
 function db_connect() {
-   global $__db , $config;
+   global $__dbh , $config;
 
-   $__db = @mysql_connect( $config['db_host'] , $config['db_user'] , $config['db_pwd']);
-   @mysql_select_db( $config['db_db'] , $__db );
+   $__dbh = new PDO( $config['db_dsn'] , $config['db_user'] , $config['db_pwd']);
+   $__dbh->setAttribute( PDO::ATTR_ERRMODE , PDO::ERRMODE_SILENT );
 }
 
 function db_close() {
-   global $__db;
-   if ( @mysql_close($__db) ) { $__db = null; }
+   global $__dbh;
+   $__dbh = null;
 }
 
 function db_getMailsOf( $email , $body = 'false' ) {
-   global $__db;
+   global $__dbh;
 
    if ( !db_isConnected() ) { db_connect(); }
    if ( !db_isConnected() ) { return null; }
 
-   $sql = "SELECT * FROM mail WHERE rcpt_md5='".md5($email)."' and status='READY' ORDER BY timestamp desc limit 10";
-   $res = @mysql_query( $sql , $__db );
+   $stmt = $__dbh->prepare("SELECT * FROM mail WHERE rcpt_md5=? and status='READY' ORDER BY timestamp desc limit 10");
+   $stmt->bindParam(1, md5($email), PDO::PARAM_STR, 32);
+   $stmt->execute();
 
    $mails = array();
-   while ( $e = @mysql_fetch_row($res) ) {
+   while ( $e = $stmt->fetch() ) {
       $item = array();
 
       $item['id']      = $e[8];
@@ -78,7 +79,7 @@ function db_getMailsOf( $email , $body = 'false' ) {
 }
 
 function db_getRAWEmailByID( $mid ) {
-   global $__db;
+   global $__dbh;
 
    if ( $mid == "" || is_null($mid) ) { return null; }
 
@@ -89,16 +90,17 @@ function db_getRAWEmailByID( $mid ) {
    if ( !db_isConnected() ) { db_connect(); }
    if ( !db_isConnected() ) { return null; }
 
-   $sql = "SELECT raw FROM mail WHERE filename_md5 = '". $mid ."'";
-   $res = @mysql_query( $sql , $__db );
+   $stmt = $__dbh->prepare('SELECT raw FROM mail WHERE filename_md5 = ?');
+   $stmt->bindParam(1, $mid, PDO::PARAM_STR, 32);
+   $stmt->execute();
 
-   if ( $e = mysql_fetch_row($res) ) { return $e; }
+   if ( $e = $stmt->fetch() ) { return $e; }
 
    return null;
 }
 
 function db_deleteEmail( $mid ) {
-   global $__db;
+   global $__dbh;
 
    $res = 0;
 
@@ -114,14 +116,15 @@ function db_deleteEmail( $mid ) {
 
    if ( !db_isConnected() ) { db_connect(); }
    if ( !db_isConnected() ) { return 0; }
-   $sql = "DELETE FROM mail WHERE filename_md5 = '". $mid ."';";
-   $res = mysql_query( $sql , $__db );
+   $stmt = $__dbh->prepare('DELETE FROM mail WHERE filename_md5 = ?');
+   $stmt->bindParam(1, $mid, PDO::PARAM_STR, 32);
+   $res = $stmt->execute();
 
    return $res;
 }
 
 function db_getEmailByID( $mid ) {
-   global $__db;
+   global $__dbh;
 
    if ( $mid == "" || is_null($mid) ) { return null; }
    // porsi las moscas .... hay q mejorar esta proteccion ...
@@ -132,12 +135,13 @@ function db_getEmailByID( $mid ) {
    if ( !db_isConnected() ) { db_connect(); }
    if ( !db_isConnected() ) { return null; }
 
-   $sql = "select * FROM mail WHERE filename_md5 = '". $mid ."';";
-   //     echo $sql . "<br>";
-   $res = mysql_query( $sql , $__db );
+   $stmt = $__dbh->prepare('select * FROM mail WHERE filename_md5 = ?');
+   $stmt->bindParam(1, $mid, PDO::PARAM_STR, 32);
+   //     echo $stmt->queryString . "<br>";
+   $stmt->execute();
 
    $item = null;
-   if ($e = mysql_fetch_row($res)) {
+   if ($e = $stmt->fetch()) {
       $item = array();
       $item['id']      = $e[8];
       $item['to']      = $e[3];
@@ -162,7 +166,7 @@ function db_getEmailByID( $mid ) {
 }
 
 function db_getEmailAddressByID( $mid ) {
-   global $__db;
+   global $__dbh;
 
    $email = "";
 
@@ -175,11 +179,12 @@ function db_getEmailAddressByID( $mid ) {
    if ( !db_isConnected() ) { db_connect(); }
    if ( !db_isConnected() ) { return $email; }
 
-   $sql = "select rcpt FROM mail WHERE filename_md5 = '". $mid ."';";
-   //     echo $sql . "<br>";
-   $res = mysql_query( $sql , $__db );
+   $stmt = $__dbh->prepare('select rcpt FROM mail WHERE filename_md5 = ?');
+   $stmt->bindParam(1, $mid, PDO::PARAM_STR, 32);
+   //     echo $stmt->queryString . "<br>";
+   $stmt->execute();
 
-   if ($e = mysql_fetch_row($res)) {
+   if ($e = $stmt->fetch()) {
       $email = $e[0];
       //     echo "EMAIL: ". $email ."]";
    }
