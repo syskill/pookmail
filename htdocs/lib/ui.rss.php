@@ -28,18 +28,20 @@ function rss_getHeader( $charset = 'ISO-8859-1' ) {
    $year = date( "Y" , $now );
    $build = date( "D, j M Y H:i:s T" ,$now );
    $desc = getTxt( 'rss.desc' );
+   $webhost = $config['webhost'];
+   $domain = $config['domain'];
 
    return <<<EOT
 <?xml version="1.0" encoding="$charset" ?>
 <rss version="2.0">
    <channel>
       <title>PookMail.com</title>
-      <link>http://$config['webhost']</link>
+      <link>http://$webhost</link>
       <description>$desc</description>
       <copyright>Copyright 2004-$year, PookMail.com</copyright>
       <generator>PookMail 1.0</generator>
-      <managingEditor>pookinfo@$config['domain']</managingEditor>
-      <webMaster>pookinfo@$config['domain']</webMaster>
+      <managingEditor>pookinfo@$domain</managingEditor>
+      <webMaster>pookinfo@$domain</webMaster>
       <ttl>10</ttl>\n
 EOT;
 }
