@@ -21,6 +21,13 @@ unless (@ARGV == 2) {
 openlog($ME, 'cons,ndelay,pid', 'mail');
 syslog('debug', "Pookmail pipe version $VERSION started");
 
+sub err_exit($$) {
+   my ($status, $msg) = @_;
+   syslog('err', $msg);
+   warn $msg;
+   exit $status;
+}
+
 my $recipient = join('@', $ARGV[0], $CFG->{domain});
 my $sender = $ARGV[1];
 my $data = '';
@@ -35,14 +42,8 @@ syslog('info', "Message received: from = $sender, to = $recipient, size = $nbyte
 
 my $msg;
 eval { $msg = RFC2822::parse($data) };
-if ($@) {
-   syslog('err', "Couldn't parse message: $@");
-   exit 65;
-}
+err_exit(65, "Couldn't parse message: $@") if $@;
 eval { DDBB::insertMail($recipient, $sender, $msg->{subject}, $msg->{text}, $data) };
-if ($@) {
-   syslog('err', "Couldn't insert message into database: $@");
-   exit 75;
-}
+err_exit(75, "Couldn't insert message into database: $@") if $@;
 syslog('info', "Message inserted into database");
 exit 0;
