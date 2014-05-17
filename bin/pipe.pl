@@ -28,7 +28,7 @@ do {
    local $/;
    $data = <STDIN>;
 };
-$data =~ s/\r$//m;
+$data =~ s/\r$//gm;
 my $nbytes = length($data);
 
 syslog('info', "Message received: from = $sender, to = $recipient, size = $nbytes");
