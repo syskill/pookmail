@@ -24,7 +24,7 @@ sub _findTextOrHTMLPart {
 
    if ( !$obj->isMultipart ) {
       $msg = $obj->body->decoded();
-      $msg =~ s/(<[^<]+>)//g if ($obj->head->get('Content-Type') && lc($obj->head->get('Content-Type')) == "text/html");
+      $msg =~ s/(<[^<]+>)//g if ($obj->head->get('Content-Type') && lc($obj->head->get('Content-Type')) =~ /^text\/html(?:;|$)/);
       $msg =~ s/$(\s*\n)+/\n/g;
       return $msg;
    }
