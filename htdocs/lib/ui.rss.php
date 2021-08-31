@@ -59,7 +59,7 @@ function rss_getItems( $local='' ) {
    while ( $e = array_pop($mails) ) {
       $xml .= "<item>\n";
       $xml .= "<title>".$e['subject']."</title>\n";
-      $xml .= "<guid>".$e['subject']."</guid>\n";
+      $xml .= "<guid isPermaLink=\"true\">http://".$config['webhost']."/mailbox/".$e['id'].".eml</guid>\n";
       $xml .= "<link>http://".$config['webhost']."/mailbox.php?email=".$local."&amp;sid=".md5( rand() )."</link>\n";
       $xml .= "<description>".$e['from']."</description>\n";
       //$xml .= "<pubDate>".date("D, j M Y H:i:s Z" , $e['date'])."</pubDate>\n";
