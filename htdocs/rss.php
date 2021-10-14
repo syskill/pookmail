@@ -18,16 +18,14 @@
  */
 
 
-   import_request_variables( "gP" , "_" );
-
    include ( 'lib/ui.rss.php' );
-   trace( '(RSS) '.$_email );
+   trace( '(RSS) '.$_GET['email'] );
 
    header("Content-Type: text/xml");
 
    echo rss_getHeader();
    
-   echo rss_getItems( $_email );
+   echo rss_getItems( $_GET['email'] );
 
    echo rss_getFooter();
 ?>
