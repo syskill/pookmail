@@ -16,7 +16,7 @@
 package DDBB;
 
 use strict;
-use DBI();
+use DBI qw(:sql_types);
 use Digest::MD5 qw(md5 md5_hex md5_base64);
 
 use Configure;
@@ -33,14 +33,17 @@ sub insertMail {
 
    my $dbh = connectToDB();
 
-   my $sql = "insert into mail (sender,rcpt,rcpt_md5,subject,data,raw,filename_md5,timestamp,status,processed) \
-           values ( \
-           ". $dbh->quote($from) ." , " .$dbh->quote($to) ." , '". md5_hex($to). "', " .$dbh->quote($subject). ", \
-           ".$dbh->quote($text). ", ". $dbh->quote($rfc2822) ." , '".md5_hex($rfc2822) ."',".time().",'READY','PLAIN' );";
+   my $sth = $dbh->prepare("insert into mail (sender,rcpt,rcpt_md5,subject,data,raw,filename_md5,timestamp,status,processed) values ( ?,?,?,?,?,?,?,?,'READY','PLAIN' )");
+   $sth->bind_param(1, $from);
+   $sth->bind_param(2, $to);
+   $sth->bind_param(3, md5_hex($to));
+   $sth->bind_param(4, $subject);
+   $sth->bind_param(5, $text, SQL_LONGVARCHAR);
+   $sth->bind_param(6, $rfc2822, SQL_LONGVARCHAR);
+   $sth->bind_param(7, md5_hex($rfc2822));
+   $sth->bind_param(8, time(), SQL_INTEGER);
 
-   #print $sql . "\n";
-
-   $dbh->do( $sql );
+   $sth->execute();
 
    $dbh->disconnect();
 }
@@ -48,10 +51,10 @@ sub insertMail {
 sub removeExpiredEmails {
    my $dbh = connectToDB();
 
-   my $sql = "delete from mail where timestamp < " . ( time() - $CFG->{expire} ) . " and status='READY'";
-   print $sql . "\n";
+   my $sth = $dbh->prepare("delete from mail where timestamp < ? and status='READY'");
+   $sth->bind_param(1, time() - $CFG->{expire}, SQL_INTEGER);
 
-   $dbh->do( $sql );
+   $sth->execute();
 
    $dbh->disconnect();
 }

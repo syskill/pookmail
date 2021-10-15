@@ -1,0 +1,59 @@
+-- Copyright 2014 Ben Slusky
+--
+-- Licensed under the GNU GENERAL PUBLIC LICENSE, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+
+
+--
+-- Table structure for table 'mail'
+--
+
+CREATE TABLE mail (
+  mid serial,
+  sender varchar(255) NOT NULL default '',
+  rcpt_md5 varchar(33) NOT NULL default '',
+  rcpt varchar(255) NOT NULL default '',
+  subject varchar(255) default NULL,
+  data text,
+  timestamp bigint NOT NULL default 0::bigint,
+  estado smallint NOT NULL default 0::smallint,
+  filename_md5 varchar(32) default NULL,
+  raw text,
+  status varchar(8) NOT NULL default 'READY',
+  processed varchar(64) NOT NULL default 'PLAIN',
+  PRIMARY KEY  (mid)
+);
+create index mail_rcpt_md5 on mail (rcpt_md5);
+create index mail_timestamp on mail (timestamp);
+create index mail_estado on mail (estado);
+create index mail_filename_md5 on mail (filename_md5);
+create index mail_status on mail (status);
+
+--
+-- Table structure for table 'pookid'
+--
+
+CREATE TABLE pookid (
+  pid serial,
+  pookid varchar(8) NOT NULL default '',
+  keyid varchar(8) NOT NULL default '',
+  pubkey text,
+  created bigint NOT NULL default 0::bigint,
+  bought bigint NOT NULL default 0::bigint,
+  expires bigint NOT NULL default 0::bigint,
+  is_hosted char(3) NOT NULL default 'no'::char(3),
+  PRIMARY KEY  (pid)
+);
+create index pookid_pookid on pookid (pookid);
+create index pookid_keyid on pookid (keyid);
+create index pookid_expires on pookid (expires);
+
